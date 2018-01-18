@@ -1,1 +1,1 @@
-mmall_learninggi
+mmall_learning
