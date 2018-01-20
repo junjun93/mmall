@@ -30,11 +30,31 @@ public class UserController {
 
     @RequestMapping(value = "login.do",method = RequestMethod.POST)
     @ResponseBody
-    public Object login(String username, String password, HttpSession session){
+    public ServerResponse<User> login(String username, String password, HttpSession session){
         ServerResponse<User> response = iUserService.login(username, password);
         if(response != null){
             session.setAttribute(Const.CURRENT_USER, response.getData());
         }
         return response;
+    }
+
+    @RequestMapping(value = "loginOut.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse<String> loginOut(HttpSession session){
+        session.removeAttribute(Const.CURRENT_USER);
+        return ServerResponse.createBySuccess();
+    }
+
+    @RequestMapping(value = "register.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse<User> register(User user){
+        return null;
+    }
+
+    @RequestMapping(value = "get_user_info.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse<User> getUserInfo(){
+
+        return null;
     }
 }
