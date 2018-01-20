@@ -19,4 +19,14 @@ checkAnswer() forgettOKEN  TokenCatch
 5.forgetRestPassword() forgetResetPassword()
  isBlank校验forgetToken  username是否存在
 _token TOKEN_PREFIX token过期校验、token equal
- updatPasswordByname() 
+ updatPasswordByName()
+ 
+6.resetPassword() checkPassword() userId横向
+ updateByPrimaryKey选择性更新
+
+7.update_information(session,user) current id
+  checkEmailByUserId(email,id)
+
+8.用户详细信息get_information(session)强制登录
+ getInformation(id) selectByPrimaryKey
+ U 

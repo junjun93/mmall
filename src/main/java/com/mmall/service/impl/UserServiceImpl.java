@@ -53,7 +53,7 @@ public class UserServiceImpl implements IUserService {
 
         resultCount = userMapper.insert(user);
         if(resultCount > 0){
-            return ServerResponse.createBySuccess("用户注册成功");
+            return ServerResponse.createBySuccess("注册成功");
         }
         return ServerResponse.createByErrorMessage("注册失败");
     }
