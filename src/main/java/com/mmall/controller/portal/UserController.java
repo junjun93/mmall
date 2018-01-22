@@ -89,16 +89,16 @@ public class UserController {
     /**
      * 7.忘记密码的重设密码
      * */
-    @RequestMapping(value = "forget_reset_pasword.do",method = RequestMethod.POST)
+    @RequestMapping(value = "forget_reset_password.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> forgetResetPassword(String username, String passwordNew, String forgetToken){
         return iUserService.forgetResetPassword(username, passwordNew, forgetToken);
     }
 
     /**
-     * 8.登录中状态重置密码，判断旧密码、更新密码
+     * 8.登录状态重置密码，判断旧密码、更新密码
      * */
-    @RequestMapping(value = "forget_reset_pasword.do",method = RequestMethod.POST)
+    @RequestMapping(value = "reset_password.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> resetPassword(HttpSession session, String passwordOld, String passwordNew){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
@@ -107,6 +107,27 @@ public class UserController {
         }
         return iUserService.resetPassword(passwordOld, passwordNew, user);
     }
+
+    /**
+     * 9.登录状态更新个人信息
+     * */
+    @RequestMapping(value = "forget_reset_pasword.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse<User> updateInformation(HttpSession session, User user){
+        User currentUser = (User)session.getAttribute(Const.CURRENT_USER);
+        if(currentUser == null){
+            return ServerResponse.createByErrorMessage("用户未登录");
+        }
+        user.setId(currentUser.getId());
+        user.setPassword(currentUser.getPassword());
+        ServerResponse<User> response = iUserService.updateInformation(user);
+        if(response.isSuccess()){
+            response.getData().setUsername(currentUser.getUsername());
+            session.setAttribute(Const.CURRENT_USER, response.getData());
+        }
+        return response;
+    }
+
     /**
      * 10.获取当前登录用户的详细信息，并强制登录
      * */
@@ -114,6 +135,7 @@ public class UserController {
     @ResponseBody
     public ServerResponse<User> getInformation(HttpSession session){
         User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+        //不理解
         if(currentUser == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),
                 "未登录，需要强制登录status=10");
