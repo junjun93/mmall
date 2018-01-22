@@ -87,7 +87,28 @@ public class UserController {
     }
 
     /**
-     * 7.获取当前登录用户的详细信息，并强制登录
+     * 7.忘记密码的重设密码
+     * */
+    @RequestMapping(value = "forget_reset_pasword.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse<String> forgetResetPassword(String username, String passwordNew, String forgetToken){
+        return iUserService.forgetResetPassword(username, passwordNew, forgetToken);
+    }
+
+    /**
+     * 8.登录中状态重置密码，判断旧密码、更新密码
+     * */
+    @RequestMapping(value = "forget_reset_pasword.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse<String> resetPassword(HttpSession session, String passwordOld, String passwordNew){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorMessage("用户未登录");
+        }
+        return iUserService.resetPassword(passwordOld, passwordNew, user);
+    }
+    /**
+     * 10.获取当前登录用户的详细信息，并强制登录
      * */
     @RequestMapping(value = "get_information.do",method = RequestMethod.POST)
     @ResponseBody

@@ -8,10 +8,10 @@
 
 4.getUserInfo(session)
     forgetGetQuesion selectQuestion selectQuestionByUsername-d
-    forgetCheckAnswer(username.question,answer)
+    forgetCheckAnswer(username, question, answer)
     checkAnswer() forgetOKEN  TokenCatch
     
-5.forgetRestPassword() forgetResetPassword()
+5.forgetResetPassword()
      isBlank校验forgetToken  username是否存在
     _token TOKEN_PREFIX token过期校验、token equal
      updatPasswordByName()
