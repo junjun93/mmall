@@ -25,3 +25,40 @@
 8.用户详细信息get_information(session)强制登录
      getInformation(id) selectByPrimaryKey
      U 
+  忘记密码修改时要判断和原来密码一样吗？
+  更新个人信息时要判断email和原来一样吗？
+  
+  二.分类模块
+   1.CategoryManageController
+    addCategory(session,name,parentId)
+    setCategoryName(session,id,name)
+    getChildrenParallelCategory(session,id)
+    getCategoryAndDeepChildrenCategory(session,id)
+    hashCode相同，equals可能不同；equals不同，hashCode不同
+  mybatis处理集合不返回none
+    Sets、Lost→gavaa
+    @RequestParam设置参数默认值
+     
+ 三.商品管理
+  1.ProductManageController
+   productSave(session,product)
+   saveOrUpdateProduct(product)
+   自动导入包
+   setSaleStatus(session,id,status)
+  2.getDetail()
+   manageProduct(id) VO
+   ProjectDtailVo
+  private assemble--Vo url与项目分离
+   PropertiesUtil static>普通>构造，类加载
+   DateTimeUtil strToDate(dataTimeStr,formatStr)
+                DateToStr(date,formatStr)
+  3.getList(session,pageNum,pageSize)
+   getProguctList()  sselectList
+   ProjectListVo assemble b
+  4.searchProject(name,id,pageNum,pageSize) selectByNameAndBYProductId()
+   4版本SQL语句
+ 
+  5.upload(MultiparFile flie,HttpServletRequest request) FileService
+   main实验fileName 06:54 FTPUtil
+   二进制文件类型，防止乱码
+   richtextImgUpload→simditor

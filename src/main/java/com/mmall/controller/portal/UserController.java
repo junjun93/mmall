@@ -111,7 +111,7 @@ public class UserController {
     /**
      * 9.登录状态更新个人信息
      * */
-    @RequestMapping(value = "forget_reset_pasword.do",method = RequestMethod.POST)
+    @RequestMapping(value = "update_information.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<User> updateInformation(HttpSession session, User user){
         User currentUser = (User)session.getAttribute(Const.CURRENT_USER);
@@ -140,16 +140,16 @@ public class UserController {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),
                 "未登录，需要强制登录status=10");
         }
-        return null;
+        return iUserService.getInformation(currentUser.getId());
     }
 
     /**
      * 11.退出登录 一般返回类型是boolean，但这里要传错误信息，返回类型变成String
      * */
-    @RequestMapping(value = "loginOut.do",method = RequestMethod.POST)
+    @RequestMapping(value = "logout.do",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse<String> loginOut(HttpSession session){
+    public ServerResponse<String> logout(HttpSession session){
         session.removeAttribute(Const.CURRENT_USER);
-        return ServerResponse.createBySuccess();
+        return ServerResponse.createBySuccessMessage("退出成功");
     }
 }

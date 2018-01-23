@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
-import static org.apache.commons.lang3.StringUtils.EMPTY;
-
 /**
  * @author junjun
  **/
@@ -33,12 +31,13 @@ public class UserServiceImpl implements IUserService {
         if(resultCount == 0){
             return ServerResponse.createByErrorMessage("用户不存在");
         }
-        User user = userMapper.selectLogin(username, password);
+        String md5Password = MD5Util.MD5EncodeUtf8(password);
+        User user = userMapper.selectLogin(username, md5Password);
         if(user == null){
             return ServerResponse.createByErrorMessage("密码错误");
         }
 
-        user.setPassword(EMPTY);
+        user.setPassword(StringUtils.EMPTY);
         return ServerResponse.createBySuccess("登录成功", user);
     }
 
@@ -113,7 +112,7 @@ public class UserServiceImpl implements IUserService {
         }
         String question = userMapper.selectQuestionByUsername(username);
         if(StringUtils.isNotBlank(question)){
-            return ServerResponse.createBySuccess();
+            return ServerResponse.createBySuccess(question);
         }
         return ServerResponse.createByErrorMessage("找回密码的问题是空的");
     }
@@ -153,7 +152,7 @@ public class UserServiceImpl implements IUserService {
         }
         if(StringUtils.equals(forgetToken, token)){
             String MD5Password = MD5Util.MD5EncodeUtf8(passwordNew);
-            int ResultCount = userMapper.updatePasswordByUsername(username, MD5Password);
+            int ResultCount = userMapper.updatePasswordByUsername(MD5Password, username);
             if(ResultCount > 0){
                 return ServerResponse.createBySuccess("修改密码成功");
             }
@@ -214,13 +213,12 @@ public class UserServiceImpl implements IUserService {
         if(user == null){
             return ServerResponse.createByErrorMessage("找不到当前用户");
         }
-        //不理解
         user.setPassword(StringUtils.EMPTY);
         return ServerResponse.createBySuccess(user);
     }
 
     /**
-     * 检查是否是管理员
+     * 11.检查是否是管理员
      * */
     @Override
     public ServerResponse<User> checkAdminRole(User user){

@@ -35,8 +35,8 @@
       update_time)
     values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
       #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{question,jdbcType=VARCHAR},
-      #{answer,jdbcType=VARCHAR}, #{role,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
-      #{updateTime,jdbcType=TIMESTAMP})
+      #{answer,jdbcType=VARCHAR}, #{role,jdbcType=INTEGER}, now(),
+      now())
     </insert>
     <insert id="insertSelective" parameterType="com.mmall.pojo.User" >
     insert into mmall_user
@@ -163,7 +163,6 @@
 
     <select id="selectLogin" resultMap="BaseResultMap" parameterType="map">
         select
-            /* *这样不好 */
         <include refid="Base_Column_List" />
         from mmall_user
         where username = #{username}
@@ -175,7 +174,7 @@
         where username = #{username}
     </select>
 
-    <select id="checkAnswer" resultType="int" parameterType="map">
+    <select id="checkAnswer" resultType="integer" parameterType="map">
         select count(1) from mmall_user
         where username = #{username}
         and question = #{question}
@@ -188,13 +187,13 @@
         where username = #{username}
     </update>
 
-    <select id="CheckPassword" resultType="int" parameterType="map">
+    <select id="CheckPassword" resultType="integer" parameterType="map">
         select count(1) from mmall_user
         where password = #{password}
         and id = #{userId}
     </select>
 
-    <select id="CheckEmailByUserId" resultType="int" parameterType="map">
+    <select id="CheckEmailByUserId" resultType="integer" parameterType="map">
         select count(1) from mmall_user
         where email = #{email}
         and id != #{userId}
