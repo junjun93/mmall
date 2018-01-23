@@ -117,7 +117,7 @@
     where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <select id="selectCategoryByParentId" resultType="map" parameterType="integer">
+    <select id="selectCategoryByParentId" resultMap="BaseResultMap" parameterType="integer">
         select
         <include refid="Base_Column_List" />
         from mmall_category
