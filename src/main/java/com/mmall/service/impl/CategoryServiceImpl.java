@@ -50,8 +50,8 @@ public class CategoryServiceImpl implements ICategoryService {
         category.setName(categoryName);
         category.setId(parentId);
         category.setStatus(true);
-        int rowcCount = categoryMapper.insert(category);
-        if(rowcCount > 0){
+        int rowCount = categoryMapper.insert(category);
+        if(rowCount > 0){
             return ServerResponse.createBySuccessMessage("添加品类成功");
         }
         return ServerResponse.createByErrorMessage("添加品类失败");
@@ -68,8 +68,8 @@ public class CategoryServiceImpl implements ICategoryService {
         Category category = new Category();
         category.setName(categoryName);
         category.setId(parentId);
-        int rowcCount = categoryMapper.updateByPrimaryKeySelective(category);
-        if(rowcCount > 0){
+        int rowCount = categoryMapper.updateByPrimaryKeySelective(category);
+        if(rowCount > 0){
             return ServerResponse.createBySuccessMessage("更新加品类成功");
         }
         return ServerResponse.createByErrorMessage("更新品类失败");

@@ -30,20 +30,19 @@
   
   二.分类模块
    1.CategoryManageController
+    getCategory(session,id)
     addCategory(session,name,parentId)
     setCategoryName(session,id,name)
-    getChildrenParallelCategory(session,id)
-    getCategoryAndDeepChildrenCategory(session,id)
+    getDeepCategory(session,id)→递归算法
     hashCode相同，equals可能不同；equals不同，hashCode不同
   mybatis处理集合不返回none
-    Sets、Lost→gavaa
+    Sets、Lists→gavaa
     @RequestParam设置参数默认值
      
  三.商品管理
   1.ProductManageController
    productSave(session,product)
    saveOrUpdateProduct(product)
-   自动导入包
    setSaleStatus(session,id,status)
   2.getDetail()
    manageProduct(id) VO
