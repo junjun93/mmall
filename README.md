@@ -27,7 +27,7 @@
   忘记密码修改时要判断和原来密码一样吗？
   更新个人信息时要判断email和原来一样吗？
   
-  二.分类模块
+ 二.分类模块
    1.CategoryManageController
     getCategory(session,id)
     addCategory(session,name,parentId)
@@ -56,8 +56,27 @@
   4.searchProject(name,id,pageNum,pageSize) selectByNameAndBYProductId()
    4版本SQL语句:直接写、1=1、where语句
  
-  5.upload(MultiparFile flie,HttpServletRequest request) FileService
+  5.upload(MultipartFile flie,HttpServletRequest request) FileService
    main实验fileName 06:54 FTPUtil
    二进制文件类型，防止乱码
    richTextImgUpload→simditor
+  6.前台商品
+   ProductController
+ getProductDetail(id) Const ProductStatusEnum
+   ON_SALE(1,在售) code value
+   list(keywor,categoryId,num,siz)
+   oderBy 
+ getProductByKeywordCategory
+   codeMessage 参数校验 page源码
+   Const ProductListOrderBy接口
+   set contain的时间复杂度1
+   selectByNameAndCategoryIds()
  补写md5、ftp
+ 
+ 四.购物车
+  CartController
+  add(count,productId)
+  selectCartByUserIdProductId()
+ interface Cart() CHECKED
+  CartProductVo() CartVo()
+  selectCarByUserId() Bigmal→Str构
