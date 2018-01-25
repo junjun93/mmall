@@ -24,7 +24,6 @@
 
 8.用户详细信息get_information(session)强制登录
      getInformation(id) selectByPrimaryKey
-     U 
   忘记密码修改时要判断和原来密码一样吗？
   更新个人信息时要判断email和原来一样吗？
   
@@ -52,12 +51,13 @@
    DateTimeUtil strToDate(dataTimeStr,formatStr)
                 DateToStr(date,formatStr)
   3.getList(session,pageNum,pageSize)
-   getProguctList()  sselectList
+   getProductList()  selectList
    ProjectListVo assemble b
   4.searchProject(name,id,pageNum,pageSize) selectByNameAndBYProductId()
-   4版本SQL语句
+   4版本SQL语句:直接写、1=1、where语句
  
   5.upload(MultiparFile flie,HttpServletRequest request) FileService
    main实验fileName 06:54 FTPUtil
    二进制文件类型，防止乱码
-   richtextImgUpload→simditor
+   richTextImgUpload→simditor
+ 补写md5、ftp

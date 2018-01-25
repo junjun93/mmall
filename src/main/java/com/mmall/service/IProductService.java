@@ -1,7 +1,12 @@
 package com.mmall.service;
 
+import com.github.pagehelper.PageInfo;
 import com.mmall.common.ServerResponse;
 import com.mmall.pojo.Product;
+import com.mmall.vo.ProductDetailVo;
+import com.mmall.vo.ProductListVo;
+
+import java.util.List;
 
 /**
  * @author junjun
@@ -9,7 +14,11 @@ import com.mmall.pojo.Product;
  **/
 public interface IProductService {
 
-    ServerResponse<String> getDetail(Integer productId);
+    ServerResponse<PageInfo> getList(Integer pageNum, Integer pageSize);
+
+    ServerResponse<PageInfo> searchProduct(String productName, Integer productId, Integer pageNum, Integer pageSize);
+
+    ServerResponse<ProductDetailVo> getDetail(Integer productId);
 
     ServerResponse<String> saveOrUpdateProduct(Product product);
 
