@@ -99,9 +99,11 @@ public class CartServiceImpl implements ICartService {
                             cartProductVo.getQuantity()));
                 }
                 cartVo.setCartProductVoList(cartProductVoList);
-                cartVo.setAllChecked();
-                cartVo.setCartTotalPrice(BigDecimalUtil.add(cartTotalPrice.doubleValue(),
-                        cartProductVo.getProductTotalPrice().doubleValue()));
+                cartVo.setAllChecked(cartMapper.selectCartProductCheckedStatusByUserId(userId));
+                if(cartItem.getChecked() == Const.Cart.CHECKED) {
+                    cartVo.setCartTotalPrice(BigDecimalUtil.add(cartTotalPrice.doubleValue(),
+                            cartProductVo.getProductTotalPrice().doubleValue()));
+                }
                 cartVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix"));
             }
         }
