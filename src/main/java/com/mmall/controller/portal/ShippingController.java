@@ -48,7 +48,7 @@ public class ShippingController {
 
     @RequestMapping("update.do")
     @ResponseBody
-    public ServerResponse<String> update(HttpSession session, Shipping shipping){
+    public ServerResponse<Shipping> update(HttpSession session, Shipping shipping){
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
