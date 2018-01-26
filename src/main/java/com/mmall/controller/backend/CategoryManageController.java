@@ -1,4 +1,4 @@
-package com.mmall.controller.end;
+package com.mmall.controller.backend;
 
 import com.mmall.common.Const;
 import com.mmall.common.ResponseCode;
@@ -20,7 +20,7 @@ import java.util.List;
  * @date 2018/1/23
  **/
 @Controller
-@RequestMapping("/manage/category")
+@RequestMapping("/manage/category/")
 public class CategoryManageController {
 
     @Autowired

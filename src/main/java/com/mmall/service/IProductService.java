@@ -14,13 +14,17 @@ import java.util.List;
  **/
 public interface IProductService {
 
-    ServerResponse<PageInfo> getList(Integer pageNum, Integer pageSize);
+    ServerResponse<PageInfo> getManageList(Integer pageNum, Integer pageSize);
 
     ServerResponse<PageInfo> searchProduct(String productName, Integer productId, Integer pageNum, Integer pageSize);
 
-    ServerResponse<ProductDetailVo> getDetail(Integer productId);
+    ServerResponse<ProductDetailVo> getManageDetail(Integer productId);
 
     ServerResponse<String> saveOrUpdateProduct(Product product);
 
     ServerResponse<String> setSaleStatus(Integer productId, Integer status);
+
+    ServerResponse<PageInfo> getProductList(String keyword, Integer categoryId, Integer pageNum, Integer pageSize, String orderBy);
+
+    ServerResponse<ProductDetailVo> getProductDetail(Integer productId);
 }

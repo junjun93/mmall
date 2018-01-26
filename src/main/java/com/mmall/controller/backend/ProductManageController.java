@@ -1,4 +1,4 @@
-package com.mmall.controller.end;
+package com.mmall.controller.backend;
 
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
@@ -11,7 +11,6 @@ import com.mmall.service.IFileService;
 import com.mmall.service.IProductService;
 import com.mmall.util.PropertiesUtil;
 import com.mmall.vo.ProductDetailVo;
-import com.mmall.vo.ProductListVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,7 +29,7 @@ import java.util.Map;
  * @date 2018/1/24
  **/
 @Controller
-@RequestMapping("/manage/product")
+@RequestMapping("/manage/product/")
 public class ProductManageController {
 
     @Autowired
@@ -45,7 +43,7 @@ public class ProductManageController {
      * */
     @RequestMapping("list.do")
     @ResponseBody
-    public ServerResponse<PageInfo> getList(HttpSession session, @RequestParam(value = "pageNum", defaultValue = "1")
+    public ServerResponse<PageInfo> getManageList(HttpSession session, @RequestParam(value = "pageNum", defaultValue = "1")
             Integer pageNum, @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize){
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         if(user == null){
@@ -53,7 +51,7 @@ public class ProductManageController {
         }
         //if(iUserService.checkAdminRole(user).isSuccess()){
         if(user.getRole() == Const.Role.ROLE_ADMIN){
-            return iProductService.getList(pageNum, pageSize);
+            return iProductService.getManageList(pageNum, pageSize);
         }
         return ServerResponse.createByErrorMessage("无权限操作，需要管理员权限");
     }
@@ -111,7 +109,7 @@ public class ProductManageController {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请登录");
         }
         if(user.getRole() == Const.Role.ROLE_ADMIN){
-            return iProductService.getDetail(product);
+            return iProductService.getManageDetail(product);
         }
         return ServerResponse.createByErrorMessage("无权限操作，需要管理员权限");
     }

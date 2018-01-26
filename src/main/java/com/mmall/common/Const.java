@@ -1,5 +1,9 @@
 package com.mmall.common;
 
+import com.google.common.collect.Sets;
+
+import java.util.Set;
+
 /**
  * @author junjun
  * @date 2018/1/19
@@ -16,6 +20,11 @@ public class Const {
         int ROLE_CUSTOMER = 0;
         //管理员
         int ROLE_ADMIN = 1;
+    }
+
+    public interface ProductListOrderBy{
+        //与前端约定，字段_排序方式
+        Set<String> PRICE_ASC_DESC = Sets.newHashSet("price_desc", "price_asc");
     }
 
     public enum ProductStatusEnum{

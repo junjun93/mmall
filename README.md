@@ -64,14 +64,14 @@
    ProductController
  getProductDetail(id) Const ProductStatusEnum
    ON_SALE(1,在售) code value
-   list(keywor,categoryId,num,siz)
+   list(keyword,categoryId,num,siz)
    oderBy 
  getProductByKeywordCategory
    codeMessage 参数校验 page源码
    Const ProductListOrderBy接口
    set contain的时间复杂度1
    selectByNameAndCategoryIds()
- 补写md5、ftp
+ 补写md5、ftp  keyword.trim() != null恒成立？？""不等同于null
  
  四.购物车
   CartController

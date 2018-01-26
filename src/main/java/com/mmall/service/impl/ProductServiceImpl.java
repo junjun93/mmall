@@ -3,12 +3,14 @@ package com.mmall.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.mmall.common.Const;
 import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
 import com.mmall.dao.CategoryMapper;
 import com.mmall.dao.ProductMapper;
 import com.mmall.pojo.Category;
 import com.mmall.pojo.Product;
+import com.mmall.service.ICategoryService;
 import com.mmall.service.IProductService;
 import com.mmall.util.DateTimeUtil;
 import com.mmall.util.PropertiesUtil;
@@ -32,11 +34,14 @@ public class ProductServiceImpl implements IProductService {
 
     @Autowired
     private CategoryMapper categoryMapper;
+
+    @Autowired
+    private ICategoryService iCategoryService;
     /**
      * 1.产品list
      * */
     @Override
-    public ServerResponse<PageInfo> getList(Integer pageNum, Integer pageSize){
+    public ServerResponse<PageInfo> getManageList(Integer pageNum, Integer pageSize){
         //startPage--start
         //填充自己的sql查询逻辑
         //pageHelper-收尾
@@ -45,10 +50,11 @@ public class ProductServiceImpl implements IProductService {
 
         List<ProductListVo> productListVoList = Lists.newArrayList();
         for(Product productItem : productList){
+            //组装VO
             ProductListVo productListVo = assembleProductListVo(productItem);
             productListVoList.add(productListVo);
         }
-        //通过数据库查询结果分页，通过VO展示需要的查询结果
+        //通过数据库查询到POJO用于分页，VO展示需要的查询结果
         PageInfo pageResult = new PageInfo(productList);
         pageResult.setList(productListVoList);
         return ServerResponse.createBySuccess(pageResult);
@@ -91,7 +97,7 @@ public class ProductServiceImpl implements IProductService {
      * 4.产品详情
      * */
     @Override
-    public ServerResponse<ProductDetailVo> getDetail(Integer productId){
+    public ServerResponse<ProductDetailVo> getManageDetail(Integer productId){
         if(productId == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),
                 ResponseCode.ILLEGAL_ARGUMENT.getDesc());
@@ -182,5 +188,69 @@ public class ProductServiceImpl implements IProductService {
             }
         }
         return ServerResponse.createByErrorMessage("添加或更新产品参数不正确");
+    }
+
+    /**
+     * 1.产品搜索及动态排序
+     * */
+    @Override
+    public ServerResponse<PageInfo> getProductList(String keyword, Integer categoryId, Integer pageNum, Integer pageSize, String orderBy){
+        if(StringUtils.isBlank(keyword) && categoryId == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+        }
+        List<Integer> categoryIdList = Lists.newArrayList();
+        if(categoryId != null){
+            Category category = categoryMapper.selectByPrimaryKey(categoryId);
+            //没有该分类、无关键词，此时不报错，返回一个空的结果集
+            if(category == null && StringUtils.isBlank(keyword)){
+                PageHelper.startPage(pageNum, pageSize);
+                List<ProductDetailVo> productDetailVoList = Lists.newArrayList();
+                PageInfo pageInfo = new PageInfo(productDetailVoList);
+                return ServerResponse.createBySuccess(pageInfo);
+            }
+            categoryIdList = iCategoryService.getDeepCategory(categoryId).getData();
+        }
+        if(StringUtils.isNotBlank(keyword)){
+            keyword = new StringBuilder().append("%").append(keyword).append("%").toString();
+        }
+
+        //排序处理
+        PageHelper.startPage(pageNum, pageSize);
+        if(StringUtils.isNotBlank(orderBy)) {
+            if(Const.ProductListOrderBy.PRICE_ASC_DESC.contains(orderBy)) {
+                String[] orderByArray = orderBy.split("_");
+                PageHelper.orderBy(orderByArray[0]+" "+orderByArray[1]);
+            }
+        }
+        List<Product> productList = productMapper.selectByNameAndProductIds(StringUtils.isBlank(keyword) ? null : keyword,
+                categoryIdList.size()==0 ? null : categoryIdList);
+        List<ProductListVo> productListVoList = Lists.newArrayList();
+        for(Product productItem : productList){
+            ProductListVo productListVo = assembleProductListVo(productItem);
+            productListVoList.add(productListVo);
+        }
+        //通过数据库查询到POJO用于分页，VO展示需要的查询结果
+        PageInfo pageResult = new PageInfo(productList);
+        pageResult.setList(productListVoList);
+        return ServerResponse.createBySuccess(pageResult);
+    }
+
+    /**
+     * 2.产品详情
+     * */
+    @Override
+    public ServerResponse<ProductDetailVo> getProductDetail(Integer productId) {
+        if(productId == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+        }
+        Product product = productMapper.selectByPrimaryKey(productId);
+        if(product == null){
+            return ServerResponse.createByErrorMessage("产品已下架或删除");
+        }
+        if(product.getStatus() != Const.ProductStatusEnum.ON_SALE.getCode()){
+            return ServerResponse.createByErrorMessage("产品已下架或删除");
+        }
+        ProductDetailVo productDetailVo = assembleProductDetailVo(product);
+        return ServerResponse.createBySuccess(productDetailVo);
     }
 }
