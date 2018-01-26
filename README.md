@@ -73,10 +73,18 @@
    selectByNameAndCategoryIds()
  补写md5、ftp  keyword.trim() != null恒成立？？""不等同于null
  
- 四.购物车
-  CartController
-  add(count,productId)
-  selectCartByUserIdProductId()
- interface Cart() CHECKED
-  CartProductVo() CartVo()
-  selectCarByUserId() Bigmal→Str构
+四.购物车
+ CartController
+ add(count,productId)
+ selectCartByUserIdProductId()
+interface Cart() CHECKED
+ CartProductVo() CartVo()
+ selectCarByUserId() BigDecimal的Str构造器
+ BigDecimalTest()丢失精度 加载spring容器
+ Java没有专门  处理货币的数据类型
+ float、double只能用来科学、工程计算
+ BigDecimal商业计算 源码
+ BigDecimalUtil sub mul div 
+ getAllCheckedStatus(userId)
+ selectCartProductCheckedStatusByUserId()
+ 
