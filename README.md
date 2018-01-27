@@ -75,16 +75,47 @@
  
 四.购物车
  CartController
- add(count,productId)
- selectCartByUserIdProductId()
-interface Cart() CHECKED
- CartProductVo() CartVo()
- selectCarByUserId() BigDecimal的Str构造器
- BigDecimalTest()丢失精度 加载spring容器
- Java没有专门  处理货币的数据类型
- float、double只能用来科学、工程计算
- BigDecimal商业计算 源码
- BigDecimalUtil sub mul div 
- getAllCheckedStatus(userId)
- selectCartProductCheckedStatusByUserId()
+ 1.add(count,productId)
+    selectCartByUserIdProductId()
+    interface Cart() CHECKED
+    CartProductVo() CartVo()
+    selectCarByUserId() BigDecimal的Str构造器
+    BigDecimalTest()丢失精度 加载spring容器
+    Java没有专门  处理货币的数据类型
+    float、double只能用来科学、工程计算
+    BigDecimal商业计算 源码
+    BigDecimalUtil sub mul div 
+    getAllCheckedStatus(userId)
+    selectCartProductCheckedStatusByUserId()
  
+ 2.update(userId,productId,count) 和前端约定
+    deleteProduct(userId,productIds)变成数组遍历然后放入集合
+    deleteByUserIdProductIds()
+    list(userId)
+ 
+ 3.selectAll()
+    checkedOrUncheckedProduct(ui,c,pi)+unSelectAll() 
+    selectOrUnSelect()
+    getCartProductCount()
+    selectCartProductCount() sum(quantity)
+    IFNULL(,0)
+《Thinking In Java》 VS 《Effective Java》 VS 《深入理解Java虚拟机》
+
+五.收货地址
+  ShippingController
+  1.add(shipping) 对象数据绑定→自生
+    add(userId,shipping)
+    
+  2.del(shippingId)
+    del(userId,shippingId)横向越权
+    deleteByShippingIdUserId()
+    
+  3.update(userId)
+    updatByShipping()
+    
+  4.select(userId)
+    select(userId, shippingId)
+    selectByShippingIdAndUserId()
+    
+  5.list(num,size)
+    list(userId,num,size)

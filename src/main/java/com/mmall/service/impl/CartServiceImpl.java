@@ -1,5 +1,6 @@
 package com.mmall.service.impl;
 
+import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.mmall.common.Const;
 import com.mmall.common.ResponseCode;
@@ -33,6 +34,18 @@ public class CartServiceImpl implements ICartService {
     @Autowired
     private ProductMapper productMapper;
 
+    /**
+     * 1.购物车列表
+     * */
+    @Override
+    public ServerResponse<CartVo> list(Integer userId){
+        CartVo cartVo = this.getCartVoLimit(userId);
+        return ServerResponse.createBySuccess(cartVo);
+    }
+
+    /**
+     * 2.购物车添加商品
+     * */
     @Override
     public ServerResponse<CartVo> add(Integer userId, Integer count, Integer productId) {
         if(userId == null || productId == null){
@@ -56,6 +69,9 @@ public class CartServiceImpl implements ICartService {
         return ServerResponse.createBySuccess(cartVo);
     }
 
+    /**
+     * 购物车共用方法
+     * */
     private CartVo getCartVoLimit(Integer userId){
         CartVo cartVo = new CartVo();
         List<Cart> cartList = cartMapper.selectCartByUserId(userId);
@@ -108,5 +124,55 @@ public class CartServiceImpl implements ICartService {
             }
         }
         return cartVo;
+    }
+
+    /**
+     * 3.购物车更新商品数量
+     * */
+    @Override
+    public ServerResponse<CartVo> update(Integer userId, Integer count, Integer productId) {
+        if(userId == null || productId == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+        }
+        Cart cart = cartMapper.selectCartByUserIdProductId(userId, productId);
+        if(cart != null){
+            cart.setQuantity(count);
+        }
+        cartMapper.updateByPrimaryKeySelective(cart);
+        return this.list(userId);
+    }
+
+    /**
+     * 4.购物车移除商品
+     * */
+    @Override
+    public ServerResponse<CartVo> deleteProduct(Integer userId, String productIds){
+        List<String> productIdList = Splitter.on(",").splitToList(productIds);
+        if(CollectionUtils.isNotEmpty(productIdList)){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+        }
+        cartMapper.deleteByUserIdProductIds(userId, productIdList);
+        return this.list(userId);
+    }
+
+    /**
+     * 5.购物车查询商品数量
+     * */
+    @Override
+    public ServerResponse<Integer> getCartProductCount(Integer userId){
+        if(userId == null){
+            return ServerResponse.createBySuccess(0);
+        }
+        int count = cartMapper.selectCartProductCount(userId);
+        return ServerResponse.createBySuccess(count);
+    }
+
+    /**
+     * 6-9.购物车各种选择
+     * */
+    @Override
+    public ServerResponse<CartVo> selectOrUnSelect(Integer userId, Integer checked, Integer productId){
+        cartMapper.checkedOrUncheckedProduct(userId, checked, productId);
+        return this.list(userId);
     }
 }
