@@ -121,3 +121,6 @@
     list(userId,num,size)
     
 六.支付
+
+
+category品类名字相同，仍然可以添加

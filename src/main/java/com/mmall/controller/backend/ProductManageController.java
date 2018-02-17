@@ -149,7 +149,7 @@ public class ProductManageController {
     /**
      * 7.富文本上传图片
      * */
-    @RequestMapping("save.do")
+    @RequestMapping("richtext.do")
     @ResponseBody
     public Map richTextImgUpload(HttpSession session, @RequestParam(value = "upload_file", required = false)
             MultipartFile file, HttpServletRequest request, HttpServletResponse response){
