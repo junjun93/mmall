@@ -1,6 +1,5 @@
 注：适应ServerResponse可复用的服务响应类、Const常量类的代码富用方式
 
-
 3.登出logout(session)
     注册register 调用接口checkEmail  ctrl+t
     枚举分组、内部接口分组 Role() ROLE_ADMIN ROLE_CUSTOMER
@@ -71,7 +70,7 @@
    Const ProductListOrderBy接口
    set contain的时间复杂度1
    selectByNameAndCategoryIds()
- 补写md5、ftp  keyword.trim() != null恒成立？？""不等同于null
+ 补写md5、ftp  keyword.trim() != null恒成立？？""不同于null
  
 四.购物车
  CartController
@@ -121,6 +120,80 @@
     list(userId,num,size)
     
 六.支付
+        
+OSGI：一种java开发技术，实现项目模块逻辑-->物理意义上的解耦
+    内嵌了一个Web服务器的，就是jetty；
+    项目启动后，不停止运行，然后停掉其中的一个模块，需要可以再重新加上。
+    该模块消失并不是javascript的技术，而是一种服务器技术，我们是通过服务器内部把它动态卸载掉的；
+
+1.初识OSGI：
+    http://blog.csdn.net/acmman/article/details/50848595
+2.idea中建立一个OSGI项目
+    http://blog.csdn.net/love_taylor/article/details/75194394
+3.基于idea+maven的OSGI示例
+    http://www.itboth.com/d/NNZRzeEVvQna/demo-osgi
+4.quick start
+    http://enroute.osgi.org/qs/050-start.html
+ 
+ 安装、配置vsftpd
+ 
+    sudo passwd root	// 设置root用户密码
+    su root 	// 切换到root用户
+    1.安装软件 
+        yum -y install vsftpd
+    2.创建虚拟用户
+         （1）选择在根或者用户目录下创建ftp文件夹  mkdir ftpfile
+         （2）添加匿名用户  useradd ftpuser -d /ftpfile -s /sbin/nologin
+         （3）修改ftpfile权限 chown -R ftpuse
+         （4）重设ftpuser密码 passwd ftpuser
+         （5）修改SELINUX=disable   vim /etc/selinux/config
+         （6）保存退出 :wq
+            注：如果一会验证的时候碰到550拒绝访问请执行
+              sudo setsebool -P ftp_home_dir 1
+            然后重启linux服务器，执行reboot命令
+         （7）编辑配置文件 sudo vim /etc/vsftpd/vsftpd.conf
+                这20个配置之外的其他配置全部删除
+         注：是否使用sudo权限执行请根据具体环境来决定
+    3.配置    
+        （1）cd /etc/vsftpd
+        （2）将用户名写到文件中，后续要引用 sudo vim chroot_list
+        （3）保存退出 :wq
+    4.防火墙配置
+        （1）sudo vim /etc/sysconfig/iptables
+        （2）
+            -A INPUT  -p TCP --dport 61001:62000 -j ACCEPT
+            -A OUTPUT -p TCP --sport 61001:62000 -j ACCEPT
+            -A INPUT  -p TCP --dport 20 -j ACCEPT
+            -A OUTPUT -p TCP --sport 20 -j ACCEPT
+            -A INPUT  -p TCP --dport 21 -j ACCEPT
+            -A OUTPUT -p TCP --sport 21 -j ACCEPT
+        将以上配置添加到防火墙配置中
+       （3）保存退出 :wq
+       （4）重启防火墙 sudo service iptables restart
+            systemctl restart iptables
+    5.vsftpd重用命令
+        sudo service vsftpd start
+        sudo service vsftpd stop
+        sudo service vsftpd restart
+        systemctl start vsftpd.service
+        
+    云服务器 ECS Linux CentOS 7 下重启服务不再通过 service 操作，而是通过 systemctl 操作。
+        查看：systemctl status sshd.service
+        启动：systemctl start sshd.service
+        重启：systemctl restart sshd.service
+        自启：systemctl enable sshd.service
+        
+ web服务器、应用服务器;form enctype
+    
+    门户：用户登录、产品、购物车、收货地址、购物车、支付、订单管理
+    后台：用户管理、品类管理、产品管理、订单管理、统计管理
+    
+功能性bug:
+    category品类名字相同，仍然可以添加；
+    parentId不存在，仍然可以添加；
+    产品list.do有图片服务器问题；
+    富文本接口名问题；
+    产品管理图片、富文本上传功能未测
 
 
-category品类名字相同，仍然可以添加
+

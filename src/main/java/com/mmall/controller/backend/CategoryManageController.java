@@ -67,14 +67,14 @@ public class CategoryManageController {
     @RequestMapping("set_category_name.do")
     @ResponseBody
     public ServerResponse<String> setCategoryName(HttpSession session, String categoryName,
-        @RequestParam(value = "parentId", defaultValue = "0") Integer parentId){
+        @RequestParam(value = "categoryId", defaultValue = "0") Integer categoryId){
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),
                     "用户未登录，请登录");
         }
         if(user.getRole() == Const.Role.ROLE_ADMIN){
-            return iCategoryService.setCategoryName(categoryName, parentId);
+            return iCategoryService.setCategoryName(categoryName, categoryId);
         }
         return ServerResponse.createByErrorMessage("无权限操作，需要管理员权限");
     }

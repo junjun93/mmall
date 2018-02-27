@@ -29,7 +29,7 @@ import java.util.Map;
  * @date 2018/1/24
  **/
 @Controller
-@RequestMapping("/manage/product/")
+@RequestMapping("/manage/product")
 public class ProductManageController {
 
     @Autowired
@@ -149,7 +149,7 @@ public class ProductManageController {
     /**
      * 7.富文本上传图片
      * */
-    @RequestMapping("richtext.do")
+    @RequestMapping("rich_text.do")
     @ResponseBody
     public Map richTextImgUpload(HttpSession session, @RequestParam(value = "upload_file", required = false)
             MultipartFile file, HttpServletRequest request, HttpServletResponse response){

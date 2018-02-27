@@ -34,6 +34,7 @@ public class CategoryServiceImpl implements ICategoryService {
         List<Category> categoryList = categoryMapper.selectCategoryByParentId(categoryId);
         if(CollectionUtils.isEmpty(categoryList)){
             logger.info("未找到当前分类的子分类");
+            return ServerResponse.createByErrorMessage("未找到该品类");
         }
         return ServerResponse.createBySuccess(categoryList);
     }
@@ -48,7 +49,7 @@ public class CategoryServiceImpl implements ICategoryService {
         }
         Category category = new Category();
         category.setName(categoryName);
-        category.setId(parentId);
+        category.setParentId(parentId);
         category.setStatus(true);
         int rowCount = categoryMapper.insert(category);
         if(rowCount > 0){
@@ -61,18 +62,18 @@ public class CategoryServiceImpl implements ICategoryService {
      * 3.修改品类名字
      * */
     @Override
-    public ServerResponse<String> setCategoryName(String categoryName, Integer parentId){
-        if(StringUtils.isBlank(categoryName) || parentId == null){
+    public ServerResponse<String> setCategoryName(String categoryName, Integer categoryId){
+        if(StringUtils.isBlank(categoryName) || categoryId == null){
             return ServerResponse.createByErrorMessage("更新品类参数错误");
         }
         Category category = new Category();
         category.setName(categoryName);
-        category.setId(parentId);
+        category.setId(categoryId);
         int rowCount = categoryMapper.updateByPrimaryKeySelective(category);
         if(rowCount > 0){
-            return ServerResponse.createBySuccessMessage("更新加品类成功");
+            return ServerResponse.createBySuccessMessage("更新品类名字成功");
         }
-        return ServerResponse.createByErrorMessage("更新品类失败");
+        return ServerResponse.createByErrorMessage("更新品类名字失败");
     }
 
     /**
