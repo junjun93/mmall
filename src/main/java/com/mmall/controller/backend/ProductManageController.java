@@ -99,17 +99,17 @@ public class ProductManageController {
     }
 
     /**
-     * 4.产品详情
+     * 4.产品详情，不分上下架
      * */
     @RequestMapping("detail.do")
     @ResponseBody
-    public ServerResponse<ProductDetailVo> getDetail(HttpSession session, Integer product){
+    public ServerResponse<ProductDetailVo> getDetail(HttpSession session, Integer productId){
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请登录");
         }
         if(user.getRole() == Const.Role.ROLE_ADMIN){
-            return iProductService.getManageDetail(product);
+            return iProductService.getManageDetail(productId);
         }
         return ServerResponse.createByErrorMessage("无权限操作，需要管理员权限");
     }
@@ -117,7 +117,7 @@ public class ProductManageController {
     /**
      * 5.产品上下架
      * */
-    @RequestMapping("sat_sale_status.do")
+    @RequestMapping("set_sale_status.do")
     @ResponseBody
     public ServerResponse<String> setSaleStatus(HttpSession session, Integer productId, Integer status){
         User user = (User) session.getAttribute(Const.CURRENT_USER);

@@ -65,7 +65,7 @@ public class CartServiceImpl implements ICartService {
         count = cart.getQuantity() + count;
         cart.setQuantity(count);
         cartMapper.updateByPrimaryKeySelective(cart);
-        CartVo cartVo = this.getCartVoLimit(userId);
+        CartVo cartVo = this.getCartVoLimit(userId);//?
         return ServerResponse.createBySuccess(cartVo);
     }
 
@@ -118,9 +118,9 @@ public class CartServiceImpl implements ICartService {
                 cartVo.setAllChecked(cartMapper.selectCartProductCheckedStatusByUserId(userId));
                 if(cartItem.getChecked() == Const.Cart.CHECKED) {
                     cartVo.setCartTotalPrice(BigDecimalUtil.add(cartTotalPrice.doubleValue(),
-                            cartProductVo.getProductTotalPrice().doubleValue()));
+                            cartProductVo.getProductTotalPrice().doubleValue()));//?
                 }
-                cartVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix"));
+                //cartVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix"));
             }
         }
         return cartVo;

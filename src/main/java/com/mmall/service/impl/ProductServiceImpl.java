@@ -94,7 +94,7 @@ public class ProductServiceImpl implements IProductService {
     }
 
     /**
-     * 4.产品详情
+     * 4.产品详情，不分上下架
      * */
     @Override
     public ServerResponse<ProductDetailVo> getManageDetail(Integer productId){
@@ -123,7 +123,7 @@ public class ProductServiceImpl implements IProductService {
         productDetailVo.setStock(product.getStock());
         productDetailVo.setStatus(product.getStatus());
 
-        productDetailVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix", "https://img.junjun.cn"));
+        //productDetailVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix", "https://img.junjun.cn"));
         //id不存在或category不存在
         Category category = categoryMapper.selectByPrimaryKey(product.getCategoryId());
         if(category == null){

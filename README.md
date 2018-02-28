@@ -144,7 +144,7 @@ OSGI：一种java开发技术，实现项目模块逻辑-->物理意义上的解
     2.创建虚拟用户
          （1）选择在根或者用户目录下创建ftp文件夹  mkdir ftpfile
          （2）添加匿名用户  useradd ftpuser -d /ftpfile -s /sbin/nologin
-         （3）修改ftpfile权限 chown -R ftpuse
+         （3）修改ftpfile权限 chown -R ftpuser.ftpuser /ftpfile
          （4）重设ftpuser密码 passwd ftpuser
          （5）修改SELINUX=disable   vim /etc/selinux/config
          （6）保存退出 :wq
@@ -169,31 +169,88 @@ OSGI：一种java开发技术，实现项目模块逻辑-->物理意义上的解
             -A OUTPUT -p TCP --sport 21 -j ACCEPT
         将以上配置添加到防火墙配置中
        （3）保存退出 :wq
-       （4）重启防火墙 sudo service iptables restart
-            systemctl restart iptables
+       （4）重启防火墙 systemctl restart iptables
+       坑：今天自己遇到的CentOS7安装vsftpd重启iptables防火墙失败问题已定位：在CentOS7中，有很多CentOS 6中的常用服务发生了变化。其中iptables是其中比较大的一个，防火墙iptables被firewalld取代。因此必须关闭并禁止启动filewalld，才能让iptables防火墙重启
     5.vsftpd重用命令
-        sudo service vsftpd start
-        sudo service vsftpd stop
-        sudo service vsftpd restart
-        systemctl start vsftpd.service
+        systemctl restart vsftpd
+        systemctl start vsftpd
+        systemctl stop vsftpd
+        systemctl status vsftpd
         
     云服务器 ECS Linux CentOS 7 下重启服务不再通过 service 操作，而是通过 systemctl 操作。
-        查看：systemctl status sshd.service
-        启动：systemctl start sshd.service
-        重启：systemctl restart sshd.service
-        自启：systemctl enable sshd.service
-        
+        查看：systemctl status sshd
+        启动：systemctl start sshd
+        重启：systemctl restart sshd
+        自启：systemctl enable sshd
+1.500 OOPS: cannot change directory:/product/ftpfile
+
+2.vsftpd：500 OOPS: vsftpd: refusing to run with writable root inside chroot ()
+从2.3.5之后，vsftpd增强了安全检查，如果用户被限定在了其主目录下，则该用户的主目录不能再具有写权限了！如果检查发现还有写权限，就会报该错误。
+ 要修复这个错误，可以用命令chmod a-w /home/user去除用户主目录的写权限，注意把目录替换成你自己的。或者你可以在vsftpd的配置文件中增加下列两项中的一项：
+allow_writeable_chroot=YES
  web服务器、应用服务器;form enctype
     
     门户：用户登录、产品、购物车、收货地址、购物车、支付、订单管理
     后台：用户管理、品类管理、产品管理、订单管理、统计管理
     
-功能性bug:
-    category品类名字相同，仍然可以添加；
-    parentId不存在，仍然可以添加；
-    产品list.do有图片服务器问题；
-    富文本接口名问题；
-    产品管理图片、富文本上传功能未测
+功能性bug
+    category品类名字相同，仍然可以添加；parentId不存在，仍然可以添加；产品save.do可以重复添加同一条信息；
+    产品list.do、detail.do有图片服务器问题；
+    产品管理图片、富文本上传功能未测；
+    产品上下架，门户联调
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
