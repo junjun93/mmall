@@ -58,7 +58,7 @@ public class ShippingServiceImpl implements IShippingService {
     public ServerResponse<Shipping> select(Integer userId, Integer shippingId) {
         Shipping shipping = shippingMapper.selectByShippingIdUserId(userId, shippingId);
         if(shipping != null){
-            return ServerResponse.createBySuccess("更新地址成功", shipping);
+            return ServerResponse.createBySuccess("查询地址成功", shipping);
         }
         return ServerResponse.createByErrorMessage("无法查询该地址");
     }

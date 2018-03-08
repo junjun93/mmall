@@ -40,7 +40,7 @@
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{receiverName,jdbcType=VARCHAR}, 
       #{receiverPhone,jdbcType=VARCHAR}, #{receiverMobile,jdbcType=VARCHAR}, #{receiverProvince,jdbcType=VARCHAR}, 
       #{receiverCity,jdbcType=VARCHAR}, #{receiverDistrict,jdbcType=VARCHAR}, #{receiverAddress,jdbcType=VARCHAR}, 
-      #{receiverZip,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      #{receiverZip,jdbcType=VARCHAR}, now(), now()
       )
   </insert>
   <insert id="insertSelective" parameterType="com.mmall.pojo.Shipping" >
@@ -178,8 +178,8 @@
   </update>
 
     <delete id="deleteByShippingIdUserId" parameterType="integer">
-        delect from mmall_skipping
-        where id = #{skippingId}
+        delete from mmall_shipping
+        where id = #{shippingId}
         and user_id = #{userId}
     </delete>
 
@@ -195,7 +195,7 @@
           receiver_address = #{receiverAddress,jdbcType=VARCHAR},
           receiver_zip = #{receiverZip,jdbcType=VARCHAR},
           create_time = #{createTime,jdbcType=TIMESTAMP},
-          update_time = #{updateTime,jdbcType=TIMESTAMP}
+          update_time = now()
         where id = #{id,jdbcType=INTEGER}
           and user_id = #{userId}
     </update>
@@ -204,7 +204,7 @@
         select
         <include refid="Base_Column_List" />
         from mmall_shipping
-        where id = #{id,jdbcType=INTEGER}
+        where id = #{shippingId,jdbcType=INTEGER}
         and user_id = #{userId,jdbcType=INTEGER}
     </select>
 
