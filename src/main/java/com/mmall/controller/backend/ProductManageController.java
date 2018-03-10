@@ -153,6 +153,7 @@ public class ProductManageController {
     @ResponseBody
     public Map richTextImgUpload(HttpSession session, @RequestParam(value = "upload_file", required = false)
             MultipartFile file, HttpServletRequest request, HttpServletResponse response){
+        //
         Map resultMap = Maps.newHashMap();
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         if(user == null){
@@ -162,6 +163,7 @@ public class ProductManageController {
         }
         if(user.getRole() == Const.Role.ROLE_ADMIN){
             String path = request.getSession().getServletContext().getRealPath("upload");
+
             String targetName = iFileService.upload(file, path);
             if(StringUtils.isBlank(targetName)){
                 resultMap.put("success", false);

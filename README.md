@@ -135,68 +135,7 @@ OSGI：一种java开发技术，实现项目模块逻辑-->物理意义上的解
 4.quick start
     http://enroute.osgi.org/qs/050-start.html
  
- 安装、配置vsftpd
  
-    passwd root	// 设置root用户密码
-    su root 	// 切换到root用户
-    1.安装软件 
-        yum -y install vsftpd(自动确定)
-    2.创建虚拟用户
-         （1）选择在根或者用户目录下创建ftp文件夹  mkdir ftpfile
-         （2）添加匿名用户  useradd ftpuser -d /ftpfile -s /sbin/nologin
-                         userdel -r ftpuser
-         （3）修改ftpfile权限 chown -R ftpuser.ftpuser ./ftpfile/(写法问题)
-         （4）重设ftpuser密码 passwd ftpuser
-         （5）将用户名写到文件中，后续要引用
-             cd /etc/vsftpd 
-             vim chroot_list
-    3.配置    
-        （1）修改SELINUX=disabled   vim /etc/selinux/config
-        （2）保存退出 :wq
-        注：如果一会验证的时候碰到550拒绝访问请执行
-          setsebool -P ftp_home_dir 1(等价于5)
-        然后重启linux服务器，执行reboot命令
-        （3）编辑配置文件 vim /etc/vsftpd/vsftpd.conf
-            这20个配置之外的其他配置全部删除
-        注：是否使用sudo权限执行请根据具体环境来决定
-    4.防火墙配置
-    坑：今天自己遇到的CentOS7安装vsftpd重启iptables防火墙失败问题已定位：
-       在CentOS7中，有很多CentOS6中的常用服务发生了变化。其中iptables是其中比较大的一个，防火墙iptables被
-       firewalld取代。因此必须关闭并禁止启动filewalld，才能让iptables防火墙重启
-        systemctl stop firewalld
-        systemctl disable firewalld
-       
-        
-        (1) yum install iptables-services
-            vim /etc/sysconfig/iptables
-        (2)
-            -A INPUT  -p TCP --dport 61001:62000 -j ACCEPT
-            -A OUTPUT -p TCP --sport 61001:62000 -j ACCEPT
-            -A INPUT  -p TCP --dport 20 -j ACCEPT
-            -A OUTPUT -p TCP --sport 20 -j ACCEPT
-            -A INPUT  -p TCP --dport 21 -j ACCEPT
-            -A OUTPUT -p TCP --sport 21 -j ACCEPT
-            
-            -A INPUT -j REJECT --reject-with icmp-host-prohibited
-            -A FORWARD -j REJECT --reject-with icmp-host-prohibited
-        将以上配置添加到防火墙配置中
-       （3）保存退出 :wq
-       （4）重启防火墙 systemctl restart iptables
-                    systemctl enable  iptables
-       
-    5.vsftpd重用命令
-        systemctl enable vsftpd
-        systemctl restart vsftpd
-        systemctl start vsftpd
-        systemctl status vsftpd
-        
-1.500 OOPS: cannot change directory:/product/ftpfile
-
-2.vsftpd：500 OOPS: vsftpd: refusing to run with writable root inside chroot ()
-从2.3.5之后，vsftpd增强了安全检查，如果用户被限定在了其主目录下，则该用户的主目录不能再具有写权限了！如果检查发现还有写权限，就会报该错误。
- 要修复这个错误，可以用命令chmod a-w /home/user去除用户主目录的写权限，注意把目录替换成你自己的。或者你可以在vsftpd的配置文件中增加下列两项中的一项：
-allow_writeable_chroot=YES
- web服务器、应用服务器;form enctype
     
     门户：用户登录、产品、购物车、收货地址、订单、支付
     后台：用户管理、品类管理、产品管理、订单管理、统计管理
@@ -223,6 +162,11 @@ allow_writeable_chroot=YES
     vim /etc/sudoers
     exit
     
+    首次要设置root用户密码
+    passwd root	
+    切换到root用户
+    su root 	
+    
     1.rpm -qa|grep jdk
     rpm -e  --nodeps  jdk版本
     
@@ -244,6 +188,66 @@ allow_writeable_chroot=YES
     3.mvn -version
     
     4.vsftpd
+    安装、配置vsftpd
+     
+        1.安装软件 
+            yum -y install vsftpd(自动确定)
+        2.创建虚拟用户
+             （1）选择在根或者用户目录下创建ftp文件夹  mkdir ftpfile
+             （2）添加匿名用户  useradd ftpuser -d /ftpfile -s /sbin/nologin
+                             userdel -r ftpuser
+             （3）修改ftpfile权限 chown -R ftpuser.ftpuser ./ftpfile/(写法问题)
+             （4）重设ftpuser密码 passwd ftpuser
+             （5）将用户名写到文件中，后续要引用
+                 cd /etc/vsftpd 
+                 vim chroot_list
+        3.配置    
+            （1）修改SELINUX=disabled   vim /etc/selinux/config
+            （2）保存退出 :wq
+            注：如果一会验证的时候碰到550拒绝访问请执行
+              setsebool -P ftp_home_dir 1(等价于5)
+            然后重启linux服务器，执行reboot命令
+            （3）编辑配置文件 vim /etc/vsftpd/vsftpd.conf
+                这20个配置之外的其他配置全部删除
+            注：是否使用sudo权限执行请根据具体环境来决定
+        4.防火墙配置
+        坑：今天自己遇到的CentOS7安装vsftpd重启iptables防火墙失败问题已定位：
+           在CentOS7中，有很多CentOS6中的常用服务发生了变化。其中iptables是其中比较大的一个，防火墙iptables被
+           firewalld取代。因此必须关闭并禁止启动filewalld，才能让iptables防火墙重启
+            systemctl stop firewalld
+            systemctl disable firewalld
+           
+            
+            (1) yum install iptables-services
+                vim /etc/sysconfig/iptables
+            (2)
+                -A INPUT  -p TCP --dport 61001:62000 -j ACCEPT
+                -A OUTPUT -p TCP --sport 61001:62000 -j ACCEPT
+                -A INPUT  -p TCP --dport 20 -j ACCEPT
+                -A OUTPUT -p TCP --sport 20 -j ACCEPT
+                -A INPUT  -p TCP --dport 21 -j ACCEPT
+                -A OUTPUT -p TCP --sport 21 -j ACCEPT
+                
+                -A INPUT -j REJECT --reject-with icmp-host-prohibited
+                -A FORWARD -j REJECT --reject-with icmp-host-prohibited
+            将以上配置添加到防火墙配置中
+           （3）保存退出 :wq
+           （4）重启防火墙 systemctl restart iptables
+                        systemctl enable  iptables
+           
+        5.vsftpd重用命令
+            systemctl enable vsftpd
+            systemctl restart vsftpd
+            systemctl start vsftpd
+            systemctl status vsftpd
+            
+    1.500 OOPS: cannot change directory:/product/ftpfile
+    
+    2.vsftpd：500 OOPS: vsftpd: refusing to run with writable root inside chroot ()
+    从2.3.5之后，vsftpd增强了安全检查，如果用户被限定在了其主目录下，则该用户的主目录不能再具有写权限了！如果检查发现还有写权限，就会报该错误。
+     要修复这个错误，可以用命令chmod a-w /home/user去除用户主目录的写权限，注意把目录替换成你自己的。或者你可以在vsftpd的配置文件中增加下列两项中的一项：
+    allow_writeable_chroot=YES
+     web服务器、应用服务器;form enctype
     
     5.nginx依赖安装
         （1）wget 下载地址
@@ -261,7 +265,7 @@ allow_writeable_chroot=YES
             vhost目录下，下载4个配置文件
 
         （4）启动
-            cd .. cd /usr/local/nginx/sbin/
+            cd /usr/local/nginx/sbin/
             ./nginx
             端口占用 fuser -k 80/tcp
 
@@ -311,8 +315,8 @@ allow_writeable_chroot=YES
         select * from mmall_product\G;
     
     7.git
-       1.rpm -qa|grep jdk
-        rpm -e  --nodeps  jdk版本
+       1.rpm -qa|grep git
+        rpm -e  --nodeps  git版本
         wget http://learning.happymmall.com/git/git-v2.8.0.tar.gz
         安装依赖
         yum -y install zlib-devel openssl-devel cpio expat-devel gettext-devel curl-devel perl-ExtUtils-CBuilder perl-ExtUtils- MakeMaker 
@@ -339,6 +343,24 @@ allow_writeable_chroot=YES
     二.上线
     ctrl+c：截断正在运行的脚本
     vsftpd没权限，添加remotePath无用
+    设置执行权限 chmod u+x *.sh
+    dhcp static
+    
+    三.CentOS设置静态ip
+        nmcli dev status
+        vim /etc/sysconfig/network-scripts/ifcfg-ens33
+        
+        BOOTPROTO="dhcp" 变 BOOTPROTO="static"
+        加上三行
+        IPADDR=192.168.1.108
+        NATMASK=255.255.255.0
+        MM_CONTROLLED=no
+
+        systemctl restart networkF
+[WARNING] Some problems were encountered while building the effective model for com:mmall:war:1.0-SNAPSHOT
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ line 273, column 21
+[WARNINIt is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNINFor this reason, future Maven versions might no longer support building such malformed projects.
     
     解压文件 tar -zxvf a.gz
     移动文件 mv a.gz /setup
@@ -435,58 +457,3 @@ allow_writeable_chroot=YES
     1282  2018-03-07 14:13:05 366 [Note] Server socket created on IP: '::'.
     1283  2018-03-07 14:13:05 366 [ERROR] Fatal error: Can't open and lock privilege tables: Table 'mysql.user' doesn't exist
     1284  180307 14:13:06 mysqld_safe mysqld from pid file /var/run/mysqld/mysqld.pid ended
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

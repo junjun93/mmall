@@ -69,7 +69,7 @@ public class ProductServiceImpl implements IProductService {
         productListVo.setMainImage(product.getMainImage());
         productListVo.setPrice(product.getPrice());
         productListVo.setStatus(product.getStatus());
-        //productListVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix", "https://img.junjun.cn"));
+        productListVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix", "http://img.happymmall.com/"));
         return productListVo;
     }
 
@@ -123,7 +123,7 @@ public class ProductServiceImpl implements IProductService {
         productDetailVo.setStock(product.getStock());
         productDetailVo.setStatus(product.getStatus());
 
-        //productDetailVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix", "https://img.junjun.cn"));
+        productDetailVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix", "http://img.happymmall.com/"));
         //id不存在或category不存在
         Category category = categoryMapper.selectByPrimaryKey(product.getCategoryId());
         if(category == null){
