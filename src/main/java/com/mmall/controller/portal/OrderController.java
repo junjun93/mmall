@@ -57,6 +57,9 @@ public class OrderController {
         return iOrderService.cancel(user.getId(), orderNo);
     }
 
+    /**
+     * 预下单接口，前端没调用
+     */
     @RequestMapping("get_order_cart_product.do")
     @ResponseBody
     public ServerResponse getOrderCartProduct(HttpSession session){

@@ -9,7 +9,7 @@ import java.util.List;
  **/
 public class CartVo {
     private List<CartProductVo> cartProductVoList;
-    private Integer allChecked;
+    private boolean allChecked;
     private BigDecimal cartTotalPrice;
     private String imageHost;
 
@@ -21,11 +21,11 @@ public class CartVo {
         this.cartProductVoList = cartProductVoList;
     }
 
-    public Integer getAllChecked() {
+    public boolean getAllChecked() {
         return allChecked;
     }
 
-    public void setAllChecked(Integer allChecked) {
+    public void setAllChecked(boolean allChecked) {
         this.allChecked = allChecked;
     }
 

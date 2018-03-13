@@ -11,11 +11,11 @@
     <title>文件上传</title>
 </head>
 <body>
-    <form action="/manage/product/upload.do" method="post" enctype="multipart/form-data">
+    <form action="/mmall/manage/product/upload.do" method="post" enctype="multipart/form-data">
         <input type="file" name="upload_file">
         <input type="submit" value="springMvc上传文件">
     </form>
-    <form action="/manage/product/rich_text.do" method="post" enctype="multipart/form-data">
+    <form action="/mmall/manage/product/rich_text.do" method="post" enctype="multipart/form-data">
         <input type="file" name="upload_file">
         <input type="submit" value="富文本图片上传文件">
     </form>

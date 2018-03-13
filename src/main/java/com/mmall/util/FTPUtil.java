@@ -14,7 +14,7 @@ import java.util.List;
  **/
 public class FTPUtil {
 
-    private static  final Logger logger = LoggerFactory.getLogger(FTPUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(FTPUtil.class);
 
     private static String ftpIp = PropertiesUtil.getProperty("ftp.server.ip");
     private static String ftpUser = PropertiesUtil.getProperty("ftp.user");
@@ -29,8 +29,8 @@ public class FTPUtil {
     public static boolean uploadFile(List<File> fileList) throws IOException {
         FTPUtil ftpUtil = new FTPUtil(ftpIp,21,ftpUser,ftpPass);
         logger.info("开始连接ftp服务器");
-        boolean result = ftpUtil.uploadFile("ftpfile",fileList);
-        logger.info("开始连接ftp服务器,结束上传,上传结果:{}");
+        boolean result = ftpUtil.uploadFile("img",fileList);
+        logger.info("开始连接ftp服务器,结束上传,上传结果:{}", result);
         return result;
     }
 
