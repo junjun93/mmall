@@ -117,12 +117,12 @@ public class OrderController {
             String valueStr = "";
             for(int i = 0; i < values.length; i++){
             //若是最后一项，不加逗号
-                valueStr = (i == values.length -1) ? valueStr + values[i] : valueStr + values[i] + ",";
+                valueStr = (i == values.length - 1) ? valueStr + values[i] : valueStr + values[i] + ",";
             }
             params.put(name, valueStr);
         }
         //非常重要，验证回调的正确性，是不是支付宝发的，并且还要避免重复通知
-        logger.info("支付宝回调，sign:{},trade_status:{},参数:{}", params.get("sign"), params.get("trade_status"),params.toString());
+        logger.info("支付宝回调，sign:{},trade_status:{},参数:{}", params.get("sign"), params.get("trade_status"), params.toString());
         params.remove("sign_type");
         try {
             boolean alipayRSACheckedV2 = AlipaySignature.rsaCheckV2(params, Configs.getAlipayPublicKey(), "utf-8", Configs.getSignType());
@@ -136,9 +136,9 @@ public class OrderController {
         //todo 验证各种数据
         ServerResponse serverResponse = iOrderService.aliCallback(params);
         if(serverResponse.isSuccess()){
-            return Const.AlipayCallback.RESPONSE_FAILED;
+            return Const.AlipayCallback.RESPONSE_SUCCESS;
         }
-        return Const.AlipayCallback.RESPONSE_SUCCESS;
+        return Const.AlipayCallback.RESPONSE_FAILED;
     }
 
     @RequestMapping("query_order_pay_status.do")

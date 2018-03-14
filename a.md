@@ -9,5 +9,7 @@ FTPUtil第32行的文件夹不存在
 
 状态信息、各种校验、高复用响应对象、VO对象处理数据
 select ifnull(sum(quantity),0) as count from mmall_cart where user_id = #{userId}
-cancel.do取消已取消的订单有bug
+cancel.do取消订单有bug
 代码比对工具，Java获取系统时间的四种方法
+
+nginx目录转发直接读取到了二维码
