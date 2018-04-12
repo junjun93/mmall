@@ -22,4 +22,4 @@ FTPUtil第32行的文件夹不存在
 select ifnull(sum(quantity),0) as count from mmall_cart where user_id = #{userId}
 代码比对工具，Java获取系统时间的四种方法
 
-nginx目录转发直接读取到了二维码,哈哈2.0了
+nginx目录转发直接读取到了二维码
