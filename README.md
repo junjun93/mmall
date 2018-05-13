@@ -51,13 +51,39 @@
     (8) append 1 app
     
 4.Redis数据结构-hash
-    (1) hset map1 name jim      hget map1 name      type    exists
+    (1) hset map1 name jim      hget map1 name  rename  type  exists
     (2) hgetall map1 name age
     (3) hdel map1 name
     (4) hsetnx map1 name
 
 5.Redis数据结构-list
-    (1) lpush
+    (1) lpush list1 1 2 3       llen list1 
+    (2) lset  list1 0 100       lrange 0 2
+    (3) lindex list 5
+    (4) lpop list1(首)       rpop list1(末)
 
+6.Redis数据结构-set
+    (1) sadd set2 a b c d       scard set2
+    (2) smembers set2
+    (3) sdiff  set1 set2(差集2)
+        sinter set1 set2(交集)
+        sunion set1 set2(并集)
+    (4) srandmeter set1 2
+    (5) sismember  set1 2
+    (6) srem set1 a b
+    (7) spop set2(移除并返回随机元素)
+
+7.Redis数据结构-sortedset
+    (1) zadd sort1 a 100 b 200 c 300 
+    (2) zcard sort1      
+    (3) zscore sort1 d
+    (4) zcount sort1 0 220      [0,220] 
+    (5) zramk sort1 a(序号)
+    (6) zincrby sort1 1000 
+    (7) zrange 0 100 withscores
+    
+e.getMessage只有一行错误信息，因此不用它
+    
 1.Decompiler反编译
 2.环境隔离打包、发布测试
+3.JsonUtil为什么字符串不能直接null判断
