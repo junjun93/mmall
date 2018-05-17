@@ -81,9 +81,29 @@
     (5) zramk sort1 a(序号)
     (6) zincrby sort1 1000 
     (7) zrange 0 100 withscores
+ 
+ 
+三.单点登录  
+    bak文件，nginx是不会加载进来的；；e.getMessage只有一行错误信息，因此不用它
+    1.CookieUtil.java 
+        StringUtils有空判断，不会报空指针异常
+        writeLoginToken()中，httpOnly防止js脚本攻击，要设置domain、path、httpOnly、maxAge等属性
+    2.UserController.java改造的代码要回看
+        login、logout-》CookieUtil
+        源码中sessionId、浏览器中Network、Application；
+        Redis中session有效期需要重置-》SessionExpireFilter
+    3.updateInformation、resetInformation、富文本上传
+    4.GuavaCacheg改造
     
-e.getMessage只有一行错误信息，因此不用它
+四.Redis分布式
+    集群：物理形态，Tomcat
+    分布式：工作方式，Redis
+    代码验证：nginx+2个Tomcat+2个Redis
     
+ 回看各种工具类
+ 
+  
 1.Decompiler反编译
 2.环境隔离打包、发布测试
-3.JsonUtil为什么字符串不能直接null判断
+3.JsonUtil为什么字符串不能直接null判断，sudo rm -rf /*
+4.Linux显示 Git 当前所在分支
