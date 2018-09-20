@@ -268,7 +268,7 @@
                 </configuration>
             </plugin>
 
-            <!--maven的核心插件之-complier插件默认只支持编译Java 1.4因此需要
+            <!--maven的核心插件之-complier插件默认只支持编译Java 1.5因此需要
                 加上支持高版本jre的配置，在pom.xml里面加上 增加编译插件-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
